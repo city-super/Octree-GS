@@ -2,7 +2,7 @@
 
 ### [Project Page](https://city-super.github.io/octree-gs/) | [Paper](https://city-super.github.io/octree-gs/)
 
-[Kerui Ren*](https://github.com/tongji-rkr), [Lihan Jiang*](https://jianglh-whu.github.io/), [Tao Lu](https://github.com/inspirelt), [Mulin Yu](https://scholar.google.com/citations?user=w0Od3hQAAAAJ), [Linning Xu](https://eveneveno.github.io/lnxu), [Yuanbo Xiangli](https://kam1107.github.io/), [Zhangkai Ni](https://kam1107.github.io/), [Bo Dai](https://daibo.info/) ✉️ <br />
+[Kerui Ren*](https://github.com/tongji-rkr), [Lihan Jiang*](https://jianglh-whu.github.io/), [Tao Lu](https://github.com/inspirelt), [Mulin Yu](https://scholar.google.com/citations?user=w0Od3hQAAAAJ), [Linning Xu](https://eveneveno.github.io/lnxu), [Zhangkai Ni](https://kam1107.github.io/), [Bo Dai](https://daibo.info/) ✉️ <br />
 
 ## Overview
 <p align="center">
