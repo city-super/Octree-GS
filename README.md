@@ -1,6 +1,6 @@
 # *Octree*-GS: Towards Consistent Real-time Rendering with LOD-Structured 3D Gaussians
 
-### [Project Page](https://city-super.github.io/octree-gs/) | [Paper](https://city-super.github.io/octree-gs/)
+### [Project Page](https://city-super.github.io/octree-gs/) | [Paper](https://arxiv.org/abs/2403.17898)
 
 [Kerui Ren*](https://github.com/tongji-rkr), [Lihan Jiang*](https://jianglh-whu.github.io/), [Tao Lu](https://github.com/inspirelt), [Mulin Yu](https://scholar.google.com/citations?user=w0Od3hQAAAAJ), [Linning Xu](https://eveneveno.github.io/lnxu), [Zhangkai Ni](https://eezkni.github.io/), [Bo Dai](https://daibo.info/) ✉️ <br />
 
