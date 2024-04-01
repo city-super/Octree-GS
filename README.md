@@ -30,7 +30,7 @@ We tested on a server configured with Ubuntu 18.04, cuda 11.6 and gcc 9.4.0. Oth
 
 1. Clone this repo:
 ```
-git clone https://gitlab.pjlab.org.cn/renkerui/Octree-GS.git --recursive
+git clone https://github.com/city-super/Octree-GS --recursive
 cd Octree-GS
 ```
 
