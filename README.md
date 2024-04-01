@@ -110,6 +110,7 @@ bash single_train.sh
 - appearance_dim: dimensions of appearance embedding
 - fork: proportion of subdivisions between LOD levels
 - base_layer: the coarsest layer of the octree, corresponding to LOD 0, '<0' means scene-based setting
+- visible_threshold: the threshold ratio of anchor points with low training frequency
 - dist2level: the way floating-point values map to integers when estimating the LOD level
 - update_ratio: the threshold ratio of anchor growing
 - progressive: whether to use progressive learning
