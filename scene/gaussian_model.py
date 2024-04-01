@@ -752,7 +752,6 @@ class GaussianModel:
 
             all_xyz = self.get_anchor.unsqueeze(dim=1) + self._offset * self.get_scaling[:,:3].unsqueeze(dim=1)
 
-            # 同层加
             grid_coords = torch.round((self.get_anchor[level_mask]-self.init_pos)/cur_size).int()
             selected_xyz = all_xyz.view([-1, 3])[candidate_mask]
             selected_grid_coords = torch.round((selected_xyz-self.init_pos)/cur_size).int()
@@ -771,7 +770,6 @@ class GaussianModel:
                 new_level = torch.zeros([0], dtype=torch.int, device='cuda')
 
             if (~self.progressive or iteration > self.coarse_intervals[-1]) and cur_level < self.levels - 1:
-                # 下一层加
                 grid_coords_ds = torch.round((self.get_anchor[level_mask]-self.init_pos)/ds_size).int()
                 selected_xyz_ds = all_xyz.view([-1, 3])[candidate_ds_mask]
                 selected_grid_coords_ds = torch.round((selected_xyz_ds-self.init_pos)/ds_size).int()
@@ -908,8 +906,6 @@ class GaussianModel:
 
         if prune_mask.shape[0]>0:
             self.prune_anchor(prune_mask)
-        
-        #assert self.levels == torch.max(self._level) - torch.min(self._level) + 1
 
     def save_mlp_checkpoints(self, path, mode = 'split'):#split or unite
         mkdir_p(os.path.dirname(path))

@@ -230,12 +230,6 @@ def prefilter_voxel(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch
     
     Background tensor (bg_color) must be on GPU!
     """
-    # # Create zero tensor. We will use it to make pytorch return gradients of the 2D (screen-space) means
-    # screenspace_points = torch.zeros_like(pc.get_anchor, dtype=pc.get_anchor.dtype, requires_grad=True, device="cuda") + 0
-    # try:
-    #     screenspace_points.retain_grad()
-    # except:
-    #     pass
 
     # Set up rasterization configuration
     tanfovx = math.tan(viewpoint_camera.FoVx * 0.5)
@@ -275,7 +269,6 @@ def prefilter_voxel(viewpoint_camera, pc : GaussianModel, pipe, bg_color : torch
         rotations = rotations,
         cov3D_precomp = cov3D_precomp)
     
-    # 合并pc._anchor_mask和radii_pure>0
     visible_mask = pc._anchor_mask.clone()
     visible_mask[pc._anchor_mask] = radii_pure > 0
     return visible_mask
