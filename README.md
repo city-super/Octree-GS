@@ -152,6 +152,21 @@ The viewer for Octree-GS is available now.
 - Kerui Ren: renkerui@pjlab.org.cn
 - Lihan Jiang: mr.lhjiang@gmail.com
 
+## Citation
+
+If you find our work helpful, please consider citing:
+
+```bibtex
+@misc{octreegs,
+      title={Octree-GS: Towards Consistent Real-time Rendering with LOD-Structured 3D Gaussians}, 
+      author={Kerui Ren and Lihan Jiang and Tao Lu and Mulin Yu and Linning Xu and Zhangkai Ni and Bo Dai},
+      year={2024},
+      eprint={2403.17898},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
 ## LICENSE
 
 Please follow the LICENSE of [3D-GS](https://github.com/graphdeco-inria/gaussian-splatting).
