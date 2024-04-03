@@ -4,7 +4,6 @@ temp*
 outputs*
 debug*
 log*
-view*
 wandb*
 *.bak
 data
