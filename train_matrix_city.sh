@@ -1,4 +1,4 @@
-scene="mipnerf360/garden"
+scene="matrix_city"
 exp_name="baseline"
 gpu=-1
 ratio=1
@@ -6,8 +6,8 @@ resolution=-1
 appearance_dim=0
 
 fork=2
-base_layer=-1
-visible_threshold=0.9
+base_layer=10
+visible_threshold=0.01
 dist2level="round"
 update_ratio=0.2
 
