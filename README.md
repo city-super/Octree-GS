@@ -162,7 +162,7 @@ python metrics.py -m <path to trained model> # Compute error metrics on renderin
 
 #### Mip-NeRF 360 Dataset
 
-|  scene   | PSNR$\uparrow$ | SSIM$\uparrow$ | LPIPS$\downarrow$ |  GS(k)  |   Mem(MB)   |
+|  scene   | PSNR | SSIM | LPIPS |  GS(k)  |   Mem(MB)   |
 | :------: | :------------: | :------------: | :---------------: | :-----: | :---------: |
 | bicycle  |     25.14      |     0.753      |       0.238       |   701   |   252.07    |
 |  garden  |     27.69      |      0.86      |       0.119       |  1344   |   272.67    |
@@ -179,7 +179,7 @@ python metrics.py -m <path to trained model> # Compute error metrics on renderin
 
 #### Tanks and Temples Dataset
 
-| scene | PSNR$\uparrow$ | SSIM$\uparrow$ | LPIPS$\downarrow$ |  GS(k)  |   Mem(MB)   |
+| scene | PSNR | SSIM | LPIPS |  GS(k)  |   Mem(MB)   |
 | :---: | :------------: | :------------: | :---------------: | :-----: | :---------: |
 | truck |     26.17      |     0.892      |       0.127       |   401   |    84.42    |
 | train |     23.04      |     0.837      |       0.184       |   446   |    84.45    |
@@ -189,7 +189,7 @@ python metrics.py -m <path to trained model> # Compute error metrics on renderin
 
 #### Deep Blending Dataset
 
-|   scene   | PSNR$\uparrow$ | SSIM$\uparrow$ | LPIPS$\downarrow$ |  GS(k)  |   Mem(MB)   |
+|   scene   | PSNR | SSIM | LPIPS |  GS(k)  |   Mem(MB)   |
 | :-------: | :------------: | :------------: | :---------------: | :-----: | :---------: |
 | drjohnson |     29.89      |     0.911      |       0.234       |   132   |   132.43    |
 | playroom  |     31.08      |     0.914      |       0.246       |   93    |    53.94    |
@@ -200,6 +200,20 @@ python metrics.py -m <path to trained model> # Compute error metrics on renderin
 ## Viewer
 
 The [viewers](https://github.com/city-super/Octree-GS/tree/main/SIBR_viewers) for Octree-GS is available now. 
+Please follow the following format
+
+```
+<location>
+|---point_cloud
+|   |---point_cloud.ply
+|---cameras.json
+|---cfg_args
+|---color_mlp.pt
+|---cov_mlp.pt
+|---opacity_mlp.pt
+(|---embedding_appearance.pt)
+|---input.ply
+```
 
 ## Contact
 
