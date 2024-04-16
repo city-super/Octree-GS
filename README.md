@@ -206,14 +206,29 @@ Please follow the following format
 <location>
 |---point_cloud
 |   |---point_cloud.ply
+|   |---color_mlp.pt
+|   |---cov_mlp.pt
+|   |---opacity_mlp.pt
+|   (|---embedding_appearance.pt)
 |---cameras.json
 |---cfg_args
-|---color_mlp.pt
-|---cov_mlp.pt
-|---opacity_mlp.pt
-(|---embedding_appearance.pt)
-|---input.ply
 ```
+
+or 
+
+```
+<location>
+|---point_cloud
+|   |---iteration_{ITERATIONS}
+|   |   |---point_cloud.ply
+|   |   |---color_mlp.pt
+|   |   |---cov_mlp.pt
+|   |   |---opacity_mlp.pt
+|   |   (|---embedding_appearance.pt)
+|---cameras.json
+|---cfg_args
+```
+
 
 ## Contact
 
