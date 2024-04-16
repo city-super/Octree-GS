@@ -191,14 +191,29 @@ Recommended checkpoint  structure in the model path location:
 <location>
 |---point_cloud
 |   |---point_cloud.ply
+|   |---color_mlp.pt
+|   |---cov_mlp.pt
+|   |---opacity_mlp.pt
+|   (|---embedding_appearance.pt)
 |---cameras.json
 |---cfg_args
-|---color_mlp.pt
-|---cov_mlp.pt
-|---opacity_mlp.pt
-(|---embedding_appearance.pt)
-|---input.ply
 ```
+
+or 
+
+```
+<location>
+|---point_cloud
+|   |---iteration_{ITERATIONS}
+|   |   |---point_cloud.ply
+|   |   |---color_mlp.pt
+|   |   |---cov_mlp.pt
+|   |   |---opacity_mlp.pt
+|   |   (|---embedding_appearance.pt)
+|---cameras.json
+|---cfg_args
+```
+
 ## Acknowledgement
 
 This repository is heavily based on SIBR viewers in [gaussian-splatting](https://github.com/graphdeco-inria/gaussian-splatting). Thanks to their great work!
