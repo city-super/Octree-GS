@@ -60,6 +60,38 @@ SIBR_ERR << cudaGetErrorString(cudaGetLastError());
 # define CUDA_SAFE_CALL(A) A
 #endif
 
+torch::Tensor build_rotation(torch::Tensor r, torch::Device _device)
+{
+	// Compute the norm of the quaternion
+	torch::Tensor norm = torch::sqrt(r.index({ "...", 0 }) * r.index({ "...", 0 }) 
+		+ r.index({ "...", 1 }) * r.index({ "...", 1 }) 
+		+ r.index({ "...", 2 }) * r.index({ "...", 2 }) 
+		+ r.index({ "...", 3 }) * r.index({ "...", 3 }));
+
+	// Normalize the quaternion
+	torch::Tensor q = r / norm.unsqueeze(-1);
+
+	// Create the rotation matrix
+	torch::Tensor R = at::zeros({ q.size(0), 3, 3 }, _device);
+
+	r = q.index({ "...", 0 });
+	torch::Tensor x = q.index({ "...", 1 });
+	torch::Tensor y = q.index({ "...", 2 });
+	torch::Tensor z = q.index({ "...", 3 });
+
+	R.index({ "...", 0, 0 }) = 1 - 2 * (y * y + z * z);
+	R.index({ "...", 0, 1 }) = 2 * (x * y - r * z);
+	R.index({ "...", 0, 2 }) = 2 * (x * z + r * y);
+	R.index({ "...", 1, 0 }) = 2 * (x * y + r * z);
+	R.index({ "...", 1, 1 }) = 1 - 2 * (x * x + z * z);
+	R.index({ "...", 1, 2 }) = 2 * (y * z - r * x);
+	R.index({ "...", 2, 0 }) = 2 * (x * z - r * y);
+	R.index({ "...", 2, 1 }) = 2 * (y * z + r * x);
+	R.index({ "...", 2, 2 }) = 1 - 2 * (x * x + y * y);
+
+	return R;
+}
+
 // Load the Gaussians from the given file.
 int loadPly(const char* filename,
 	std::vector<float>& pos,
@@ -387,7 +419,7 @@ std::function<char* (size_t N)> resizeFunctional(void** ptr, size_t& S) {
 	return lambda;
 }
 
-sibr::GaussianView::GaussianView(const sibr::BasicIBRScene::Ptr& ibrScene, uint render_w, uint render_h, const char* file, bool* messageRead, int fork, bool white_bg, bool useInterop, int device, int appearance_id, bool add_opacity_dist, bool add_cov_dist, bool add_color_dist) :
+sibr::GaussianView::GaussianView(const sibr::BasicIBRScene::Ptr& ibrScene, uint render_w, uint render_h, std::string plyPath, bool* messageRead, int fork, bool white_bg, bool useInterop, int device, int appearance_id, bool add_opacity_dist, bool add_cov_dist, bool add_color_dist) :
 	_scene(ibrScene),
 	_dontshow(messageRead),
 	_fork(fork),
@@ -432,12 +464,12 @@ sibr::GaussianView::GaussianView(const sibr::BasicIBRScene::Ptr& ibrScene, uint 
 	_scene->cameras()->debugFlagCameraAsUsed(imgs_ulr);
 
 	// 获取file的文件夹名， file是const char*
-	std::string file_path = file;
-	std::string folder = file_path.substr(0, file_path.size() - 28);
-	std::string opacity_mlp_path = folder + "opacity_mlp.pt";
-	std::string cov_mlp_path = folder + "cov_mlp.pt";
-	std::string color_mlp_path = folder + "color_mlp.pt";
-	std::string appearance_path = folder + "embedding_appearance.pt";
+	std::string ply_path = plyPath + "point_cloud.ply";
+	std::string opacity_mlp_path = plyPath + "opacity_mlp.pt";
+	std::string cov_mlp_path = plyPath + "cov_mlp.pt";
+	std::string color_mlp_path = plyPath + "color_mlp.pt";
+	std::string appearance_path = plyPath + "embedding_appearance.pt";
+	SIBR_LOG << "Loading models from: " << plyPath << std::endl;
 	SIBR_LOG << "opacity_mlp : " << isFileExists_fopen(opacity_mlp_path) << std::endl;
 	SIBR_LOG << "cov_mlp : " << isFileExists_fopen(cov_mlp_path) << std::endl;
 	SIBR_LOG << "color_mlp : " << isFileExists_fopen(color_mlp_path) << std::endl;
@@ -457,7 +489,7 @@ sibr::GaussianView::GaussianView(const sibr::BasicIBRScene::Ptr& ibrScene, uint 
 	}
 
 	// Load the PLY data (AoS) to the GPU (SoA)
-	count = loadPly(file, anchor_pos, anchor_level, anchor_extra_level, anchor_offset, anchor_feature, anchor_opacity, anchor_scale_1, anchor_scale_2, anchor_rotation, gaussian_pos, voxel_size, standard_dist, levels, _scenemax, _scenemin);
+	count = loadPly(ply_path.c_str(), anchor_pos, anchor_level, anchor_extra_level, anchor_offset, anchor_feature, anchor_opacity, anchor_scale_1, anchor_scale_2, anchor_rotation, gaussian_pos, voxel_size, standard_dist, levels, _scenemax, _scenemin);
 	ak_pos_all = torch::from_blob(anchor_pos.data(), { count , 3 }, torch::kFloat32).to(_libtorch_device);
 	ak_level_all = torch::from_blob(anchor_level.data(), { count , 1 }, torch::kInt).to(_libtorch_device);
 	ak_extra_level_all = torch::from_blob(anchor_extra_level.data(), { count, 1 }, torch::kFloat32).to(_libtorch_device);	gs_pos_all = torch::from_blob(gaussian_pos.data(), { count, 30 }, torch::kFloat32).to(_libtorch_device);
@@ -735,6 +767,29 @@ void sibr::GaussianView::onRenderIBR(sibr::IRenderTarget& dst, const sibr::Camer
 		int* rects = _fastCulling ? rect_cuda : nullptr;
 		float* boxmin = _cropping ? (float*)&_boxmin : nullptr;
 		float* boxmax = _cropping ? (float*)&_boxmax : nullptr;
+
+		if (currMode == "Depth")
+		{
+			torch::Tensor projvect1 = viewmatrix.index({ "...", 2 }).index({ torch::indexing::Slice(0, 3) });
+			torch::Tensor projvect2 = viewmatrix.index({ "...", 2 }).index({ -1 });
+			gs_color = (gs_pos * projvect1.unsqueeze(0)).sum(-1, true) + projvect2;
+			float gs_color_min = torch::min(gs_color).item().toFloat();
+			float gs_color_max = torch::max(gs_color).item().toFloat();
+			gs_color = (gs_color - gs_color_min) / (gs_color_max - gs_color_min);
+			gs_color = gs_color.repeat({ 1,3 });
+		}
+		else if (currMode == "Normal")
+		{
+			torch::Tensor rotations_mat = build_rotation(gs_rot, _libtorch_device);
+			torch::Tensor min_scales = torch::argmin(gs_scale, 1).to(_libtorch_device);
+			torch::Tensor indices = torch::arange(min_scales.size(0)).to(_libtorch_device);
+			torch::Tensor normal = rotations_mat.index({ indices, "...", min_scales}).to(_libtorch_device);
+			torch::Tensor view_dir = gs_pos - eye_pos_tensor;
+			normal = normal * ((((view_dir * normal).sum(-1) < 0) * 1 - 0.5) * 2).unsqueeze(-1);
+			torch::Tensor R_w2c = torch::from_blob(eye.rotation().matrix().data(), { 3, 3 }).t().to(_libtorch_device);
+			gs_color = torch::matmul(R_w2c, normal.transpose(0, 1)).transpose(0, 1);
+		}
+
 		CudaRasterizer::Rasterizer::forward(
 			geomBufferFunc,
 			binningBufferFunc,
@@ -801,6 +856,10 @@ void sibr::GaussianView::onGUI()
 				currMode = "Splats";
 			if (ImGui::Selectable("Initial Points"))
 				currMode = "Initial Points";
+			if (ImGui::Selectable("Depth"))
+				currMode = "Depth";
+			if (ImGui::Selectable("Normal"))
+				currMode = "Normal";
 			if (ImGui::Selectable("LOD Levels"))
 				currMode = "LOD Levels";	
 			if (ImGui::Selectable("LOD Bias"))
