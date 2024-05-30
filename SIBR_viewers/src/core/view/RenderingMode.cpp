@@ -26,7 +26,7 @@ namespace sibr
 			sibr::loadFile(sibr::Resources::Instance()->getResourceFilePathName("texture.fp")));
 	}
 
-	void	MonoRdrMode::render( ViewBase& view, const sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest )
+	void	MonoRdrMode::render( ViewBase& view, sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest )
 	{
 		/// TODO: clean everything. Resolution handling.
 
@@ -123,7 +123,7 @@ std::cerr <<"End of render pass 1" << std::endl;
 		_eyeDist = (float)0.065; /* meters */
 	}
 
-	void	StereoAnaglyphRdrMode::render( ViewBase& view, const sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest)
+	void	StereoAnaglyphRdrMode::render( ViewBase& view,sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest)
 	{
 		int w = (int)viewport.finalWidth();
 		int h = (int)viewport.finalHeight();

@@ -182,6 +182,7 @@ int main( int ac, char** av )
 				exit(0);
 		}
 
+		ShowInfo info;
 		while (window.isOpened())
 		{
 			sibr::Input::poll();
@@ -190,7 +191,7 @@ int main( int ac, char** av )
 				window.close();
 
 			multiViewManager.onUpdate(sibr::Input::global());
-			multiViewManager.onRender(window);
+			multiViewManager.onRender(window, info);
 			window.swapBuffer();
 			CHECK_GL_ERROR
 		}

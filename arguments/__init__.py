@@ -81,7 +81,7 @@ class ModelParams(ParamGroup):
         self.dist_ratio = 0.999 # 0.99/0.999
         self.levels = -1 # -1(adaptive) or 0 ~ 
         self.init_level = -1 # -1(adaptive) or 0 ~ levels-1
-        self.extra_ratio = 0.5
+        self.extra_ratio = 0.25
         self.extra_up = 0.01
         
         super().__init__(parser, "Loading Parameters", sentinel)
@@ -151,10 +151,10 @@ class OptimizationParams(ParamGroup):
         # for anchor densification
         self.start_stat = 500
         self.update_from = 1500
-        self.coarse_iter = 5000
+        self.coarse_iter = 10000
         self.coarse_factor = 1.5
         self.update_interval = 100
-        self.update_until = 20000
+        self.update_until = 25000
         self.update_anchor = True
 
         self.min_opacity = 0.005

@@ -23,6 +23,7 @@
 #include <boost/filesystem.hpp>
 #include <regex>
 #include <imgui/imgui_internal.h>
+# include "core/graphics/Camera.hpp"
 
 namespace fs = boost::filesystem;
 
@@ -120,7 +121,7 @@ int main(int ac, char** av)
 	const char* toload = myArgs.modelPath.get().c_str();
 
 	// Window setup
-	sibr::Window		window(PROGRAM_NAME, sibr::Vector2i(50, 50), myArgs, getResourcesDirectory() + "/gaussians/" + PROGRAM_NAME + ".ini");
+	sibr::Window window(PROGRAM_NAME, sibr::Vector2i(50, 50), myArgs, getResourcesDirectory() + "/gaussians/" + PROGRAM_NAME + ".ini");
 
 	bool messageRead = false;
 	ImGuiSettingsHandler ini_handler;
@@ -251,7 +252,7 @@ int main(int ac, char** av)
 	generalCamera->setup(scene->cameras()->inputCameras(), Viewport(0, 0, (float)usedResolution.x(), (float)usedResolution.y()), nullptr);
 
 	// Add views to mvm.
-	MultiViewManager        multiViewManager(window, false);
+	MultiViewManager multiViewManager(window, false);
 
 	if (myArgs.rendering_mode == 1) 
 		multiViewManager.renderingMode(IRenderingMode::Ptr(new StereoAnaglyphRdrMode()));
@@ -275,6 +276,7 @@ int main(int ac, char** av)
 			exit(0);
 	}
 
+	ShowInfo info;
 	// Main looooooop.
 	while (window.isOpened()) 
 	{
@@ -285,7 +287,7 @@ int main(int ac, char** av)
 		}
 
 		multiViewManager.onUpdate(sibr::Input::global());
-		multiViewManager.onRender(window);
+		multiViewManager.onRender(window, info);
 
 		size_t freeMemory, totalMemory;
 		cudaGetDevice(&device);

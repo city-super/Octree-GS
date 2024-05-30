@@ -59,7 +59,7 @@ namespace sibr
 		 *\param eye current viewpoint
 		 *\sa IRenderingMode
 		 */
-		virtual void	onRenderIBR(IRenderTarget& dst, const Camera& eye) {};
+		virtual void	onRenderIBR(IRenderTarget& dst, Camera& eye) {};
 
 		/** Display GUI. */
 		virtual void	onGUI() { }

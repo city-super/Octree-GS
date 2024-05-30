@@ -558,7 +558,7 @@ void sibr::GaussianView::setScene(const sibr::BasicIBRScene::Ptr& newScene)
 	_scene->cameras()->debugFlagCameraAsUsed(imgs_ulr);
 }
 
-void sibr::GaussianView::onRenderIBR(sibr::IRenderTarget& dst, const sibr::Camera& eye)
+void sibr::GaussianView::onRenderIBR(sibr::IRenderTarget& dst, sibr::Camera& eye)
 {
 	if (currMode == "Initial Points")
 	{
@@ -739,6 +739,8 @@ void sibr::GaussianView::onRenderIBR(sibr::IRenderTarget& dst, const sibr::Camer
 			return;
 		}
 
+		eye._showInfo._anchor_points = M;
+		eye._showInfo._gaussian_points = P;
 		gs_pos = all.narrow(-1, 0, 3);
 		gs_scale = torch::sigmoid(all.narrow(-1, 9, 3)).mul(all.narrow(-1, 3, 3));
 		gs_color = all.narrow(-1, 6, 3);
@@ -773,9 +775,9 @@ void sibr::GaussianView::onRenderIBR(sibr::IRenderTarget& dst, const sibr::Camer
 			torch::Tensor projvect1 = viewmatrix.index({ "...", 2 }).index({ torch::indexing::Slice(0, 3) });
 			torch::Tensor projvect2 = viewmatrix.index({ "...", 2 }).index({ -1 });
 			gs_color = (gs_pos * projvect1.unsqueeze(0)).sum(-1, true) + projvect2;
-			float gs_color_min = torch::min(gs_color).item().toFloat();
-			float gs_color_max = torch::max(gs_color).item().toFloat();
-			gs_color = (gs_color - gs_color_min) / (gs_color_max - gs_color_min);
+			float gs_color_mean = gs_color.mean().item().toFloat();
+			float gs_color_std = gs_color.std().item().toFloat();
+			gs_color = gs_color / (gs_color_mean + gs_color_std * 2) ;
 			gs_color = gs_color.repeat({ 1,3 });
 		}
 		else if (currMode == "Normal")
@@ -788,6 +790,11 @@ void sibr::GaussianView::onRenderIBR(sibr::IRenderTarget& dst, const sibr::Camer
 			normal = normal * ((((view_dir * normal).sum(-1) < 0) * 1 - 0.5) * 2).unsqueeze(-1);
 			torch::Tensor R_w2c = torch::from_blob(eye.rotation().matrix().data(), { 3, 3 }).t().to(_libtorch_device);
 			gs_color = torch::matmul(R_w2c, normal.transpose(0, 1)).transpose(0, 1);
+		}
+		else if (currMode == "Gaussian Points")
+		{
+			gs_color = torch::ones_like(gs_color);
+			gs_scale = torch::ones_like(gs_scale) * 0.00001;
 		}
 
 		CudaRasterizer::Rasterizer::forward(
@@ -856,6 +863,8 @@ void sibr::GaussianView::onGUI()
 				currMode = "Splats";
 			if (ImGui::Selectable("Initial Points"))
 				currMode = "Initial Points";
+			if (ImGui::Selectable("Gaussian Points"))
+				currMode = "Gaussian Points";
 			if (ImGui::Selectable("Depth"))
 				currMode = "Depth";
 			if (ImGui::Selectable("Normal"))
@@ -868,7 +877,8 @@ void sibr::GaussianView::onGUI()
 		}
 	}
 
-	ImGui::SliderFloat("Scaling Modifier", &_scalingModifier, 0.001f, 1.0f);
+	if (currMode!="Initial Points"&& currMode != "Gaussian Points")
+		ImGui::SliderFloat("Scaling Modifier", &_scalingModifier, 0.001f, 1.0f);
 	ImGui::Checkbox("Splatting All", &_splattingAll);
 	if (!_splattingAll)
 	{

@@ -44,7 +44,7 @@ namespace sibr
 		 *\param optDest an optional destination RT 
 		 */
 		virtual void	render( 
-			ViewBase& view, const sibr::Camera& eye, const sibr::Viewport& viewport, 
+			ViewBase& view, sibr::Camera& eye, const sibr::Viewport& viewport, 
 			IRenderTarget* optDest = nullptr) = 0;
 
 		/** Get the current rendered image as a CPU image
@@ -90,7 +90,7 @@ namespace sibr
 		 *\param viewport the current viewport
 		 *\param optDest an optional destination RT
 		 */
-		void	render( ViewBase& view, const sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest = nullptr);
+		void	render( ViewBase& view, sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest = nullptr);
 
 		/** Get the current rendered image as a CPU image
 		 *\param current_img will contain the content of the RT */
@@ -127,7 +127,7 @@ namespace sibr
 		 *\param viewport the current viewport
 		 *\param optDest an optional destination RT
 		 */
-		void	render( ViewBase& view, const sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest = nullptr);
+		void	render( ViewBase& view, sibr::Camera& eye, const sibr::Viewport& viewport, IRenderTarget* optDest = nullptr);
 
 		/** Set the focal distance.
 		\param focal focal distance

@@ -153,6 +153,7 @@ int main(int ac, char** av) {
 	}
 
 	// Main looooooop.
+	ShowInfo info;
 	while (window.isOpened()) 
 	{
 		if (!pathOverride && remoteView->sceneName() != "" && remoteView->sceneName() != currentName)
@@ -169,7 +170,7 @@ int main(int ac, char** av) {
 		}
 
 		multiViewManager.onUpdate(sibr::Input::global());
-		multiViewManager.onRender(window);
+		multiViewManager.onRender(window, info);
 
 		window.swapBuffer();
 		CHECK_GL_ERROR;

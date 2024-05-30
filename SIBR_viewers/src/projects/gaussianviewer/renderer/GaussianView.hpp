@@ -68,7 +68,7 @@ namespace sibr {
 		 * \param dst The destination rendertarget.
 		 * \param eye The novel viewpoint.
 		 */
-		void onRenderIBR(sibr::IRenderTarget& dst, const sibr::Camera& eye) override;
+		void onRenderIBR(sibr::IRenderTarget& dst, sibr::Camera& eye) override;
 
 		/**
 		 * Update inputs (do nothing).

@@ -17,6 +17,7 @@
 #include <core/scene/BasicIBRScene.hpp>
 #include <core/raycaster/Raycaster.hpp>
 #include <core/view/SceneDebugView.hpp>
+# include "core/graphics/Camera.hpp"
 
 #define PROGRAM_NAME "sibr_PointBased_app"
 using namespace sibr;
@@ -98,6 +99,7 @@ int main( int ac, char** av )
 				exit(0);
 		}
 
+		ShowInfo info;
 		while (window.isOpened())
 		{
 			sibr::Input::poll();
@@ -105,8 +107,9 @@ int main( int ac, char** av )
 			if (sibr::Input::global().key().isPressed(sibr::Key::Escape))
 				window.close();
 
+
 			multiViewManager.onUpdate(sibr::Input::global());
-			multiViewManager.onRender(window);
+			multiViewManager.onRender(window, info);
 			window.swapBuffer();
 			CHECK_GL_ERROR
 		}

@@ -204,7 +204,7 @@ namespace sibr
 		*/
 		void setViewPath(ViewBase::Ptr view, const std::string& dataset_path) { _view = view; _dsPath = dataset_path;  };
 
-		void saveImage(const std::string& outPathDir, const Camera& cam, int w, int h);
+		void saveImage(const std::string& outPathDir, Camera& cam, int w, int h);
 
 		/**
 		 * \return the interpolation speed

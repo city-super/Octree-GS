@@ -16,6 +16,7 @@
 #include "SceneDebugView.hpp"
 #include "ImagesGrid.hpp"
 #include "core/scene/BasicIBRScene.hpp"
+# include "core/graphics/Camera.hpp"
 
 namespace sibr {
 
@@ -51,7 +52,7 @@ namespace sibr {
 		/** Perform rendering.
 		 *\param win the destination window
 		 **/
-		virtual void	onRender(Window& win) override;
+		virtual void	onRender(Window& win, ShowInfo& info) override;
 
 	protected:
 

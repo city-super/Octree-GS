@@ -268,7 +268,7 @@ namespace sibr
 		onUpdate(input, 1.0f / 60.0f);
 	}
 
-	void SceneDebugView::onRender(Window & win)
+	void SceneDebugView::onRender(Window& win)
 	{
 		// We need no information about the window, we render wherever we are.
 		onRender(win.viewport());

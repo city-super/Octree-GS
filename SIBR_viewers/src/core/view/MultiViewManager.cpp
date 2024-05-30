@@ -13,6 +13,7 @@
 
 # include "core/graphics/GUI.hpp"
 # include "core/view/MultiViewManager.hpp"
+# include "core/graphics/Camera.hpp"
 
 namespace sibr
 {
@@ -82,13 +83,19 @@ namespace sibr
 		}
 	}
 
-	void MultiViewBase::onRender(Window& win)
+	void MultiViewBase::onRender(Window& win, ShowInfo& info)
 	{
 		// Render all views.
 		for (auto & subview : _ibrSubViews) {
 			if (subview.second.view->active()) {
 
+				//renderSubView(subview.second);
 				renderSubView(subview.second);
+				if (subview.first == "Point view")
+				{
+					info._anchor_points = subview.second.cam._showInfo._anchor_points;
+					info._gaussian_points = subview.second.cam._showInfo._gaussian_points;
+				}					
 
 				if (_enableGUI && _showSubViewsGui) {
 					subview.second.view->onGUI();
@@ -97,6 +104,7 @@ namespace sibr
 					}
 				}
 			}
+
 		}
 		for (auto & subview : _subViews) {
 			if (subview.second.view->active()) {
@@ -112,7 +120,7 @@ namespace sibr
 			}
 		}
 		for (auto & subMultiView : _subMultiViews) {
-			subMultiView.second->onRender(win);
+			subMultiView.second->onRender(win, info);
 		}
 
 
@@ -415,7 +423,7 @@ namespace sibr
 		SubView(view_, rt_, viewport_, name_, flags_), updateFunc(f_) {
 	}
 
-	void MultiViewBase::BasicSubView::render(const IRenderingMode::Ptr& rm, const Viewport& renderViewport) const  {
+	void MultiViewBase::BasicSubView::render(const IRenderingMode::Ptr& rm, const Viewport& renderViewport) {
 		rt->bind();
 		renderViewport.bind();
 		renderViewport.clear();
@@ -428,7 +436,7 @@ namespace sibr
 		cam = sibr::InputCamera();
 	}
 
-	void MultiViewBase::IBRSubView::render(const IRenderingMode::Ptr& rm, const Viewport& renderViewport) const  {
+	void MultiViewBase::IBRSubView::render(const IRenderingMode::Ptr& rm, const Viewport& renderViewport)  {
 		if (rm) {
 			rm->render(*view, cam, renderViewport, rt.get());
 		}
@@ -466,7 +474,7 @@ namespace sibr
 		}
 	}
 
-	void MultiViewManager::onRender(Window & win)
+	void MultiViewManager::onRender(Window& win, ShowInfo& info)
 	{
 		win.viewport().bind();
 		glClearColor(37.f / 255.f, 37.f / 255.f, 38.f / 255.f, 1.f);
@@ -475,9 +483,9 @@ namespace sibr
 
 		onGui(win);
 
-		MultiViewBase::onRender(win);
+		MultiViewBase::onRender(win, info);
 
-		_fpsCounter.update(_enableGUI && _showGUI);
+		_fpsCounter.update(info, _enableGUI && _showGUI);
 	}
 
 	void MultiViewManager::onGui(Window & win)

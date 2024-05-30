@@ -78,7 +78,7 @@ namespace sibr {
 		MultiViewInterfaceView() {}
 		MultiViewInterfaceView(MultiViewInterface * interfacePtr, ViewType type) : interfacePtr(interfacePtr), viewType(type) {}
 
-		virtual void	onRenderIBR(IRenderTarget& /*dst*/, const sibr::Camera& /*eye*/) {}
+		virtual void	onRenderIBR(IRenderTarget& /*dst*/, sibr::Camera& /*eye*/) {}
 		
 		virtual void	onUpdate(Input& /*input*/, const sibr::Viewport & viewport);
 		virtual void	onRender(const sibr::Viewport & viewport);

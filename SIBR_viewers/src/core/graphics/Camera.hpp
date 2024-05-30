@@ -18,6 +18,12 @@
 
 namespace sibr
 {
+	class ShowInfo 
+	{
+	public:
+		int _anchor_points = 0;
+		int _gaussian_points = 0;
+	};
 	/** Represent a basic camera.
 	\note In practice, InputCamera is used most of the time
 	* \ingroup sibr_graphics
@@ -263,6 +269,9 @@ namespace sibr
 		*/
 		void				setDebugVideo(const bool debug) { _debugVideoFrames = debug; }
 		
+		//Info for Show
+		ShowInfo		_showInfo;
+
 	protected:
 
 		/** Trigger a viewproj matrix udpate. */

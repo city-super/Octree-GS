@@ -29,10 +29,11 @@
 # include "core/view/ViewBase.hpp"
 # include "core/graphics/Shader.hpp"
 # include "core/view/FPSCounter.hpp"
-#include "core/video/FFmpegVideoEncoder.hpp"
-#include "InteractiveCameraHandler.hpp"
-#include <random>
-#include <map>
+# include "core/video/FFmpegVideoEncoder.hpp"
+# include "InteractiveCameraHandler.hpp"
+# include "core/graphics/Camera.hpp"
+# include <random>
+# include <map>
 
 
 namespace sibr
@@ -83,7 +84,7 @@ namespace sibr
 		 * \brief Render the content of the MultiViewBase
 		 * \param win The OS window into which the rendering should be performed.
 		 */
-		virtual void	onRender(Window& win);
+		virtual void	onRender(Window& win, ShowInfo& info);
 
 		/**
 		 * \brief Render additional gui
@@ -275,7 +276,7 @@ namespace sibr
 			 *\param rm the rendering mode to use
 			 *\param renderViewport the viewport to use in the destination RT
 			 */
-			virtual void render(const IRenderingMode::Ptr & rm, const Viewport & renderViewport) const = 0;
+			virtual void render(const IRenderingMode::Ptr & rm, const Viewport & renderViewport) = 0;
 		};
 
 		/** Specialization of Subview for basic views. */
@@ -303,7 +304,7 @@ namespace sibr
 			 *\param rm the rendering mode to use (unused)
 			 *\param renderViewport the viewport to use in the destination RT
 			 */
-			void render(const IRenderingMode::Ptr & rm, const Viewport & renderViewport) const override;
+			void render(const IRenderingMode::Ptr & rm, const Viewport & renderViewport) override;
 		};
 
 		/** Specialization of Subview for views using a render mode (IBR views mainly). */
@@ -334,7 +335,7 @@ namespace sibr
 			 *\param rm the rendering mode to use
 			 *\param renderViewport the viewport to use in the destination RT
 			 */
-			 void render(const IRenderingMode::Ptr & rm, const Viewport & renderViewport) const override;
+			 void render(const IRenderingMode::Ptr & rm, const Viewport & renderViewport) override;
 		};
 
 	protected:
@@ -409,7 +410,7 @@ namespace sibr
 		 * \brief Render the content of the MultiViewManager and its interface
 		 * \param win The OS window into which the rendering should be performed.
 		 */
-		void	onRender(Window& win) override;
+		void	onRender(Window& win, ShowInfo& info) override;
 
 		/**
 		 * \brief Render menus and additional gui

@@ -471,7 +471,7 @@ namespace sibr
 
 	}
 
-	void CameraRecorder::saveImage(const std::string& outPathDir, const Camera& cam, int w, int h) {
+	void CameraRecorder::saveImage(const std::string& outPathDir, Camera& cam, int w, int h) {
 		sibr::ImageRGBA32F::Ptr outImage;
 		_ow = w, _oh = h;
 		outImage.reset(new ImageRGBA32F(_ow, _oh));

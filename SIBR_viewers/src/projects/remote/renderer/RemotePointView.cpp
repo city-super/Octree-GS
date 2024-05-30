@@ -132,7 +132,7 @@ void sibr::RemotePointView::setScene(const sibr::BasicIBRScene::Ptr & newScene) 
 	_scene->cameras()->debugFlagCameraAsUsed(imgs_ulr);
 }
 
-void sibr::RemotePointView::onRenderIBR(sibr::IRenderTarget & dst, const sibr::Camera & eye)
+void sibr::RemotePointView::onRenderIBR(sibr::IRenderTarget & dst, sibr::Camera & eye)
 {
 	if (!_scene)
 		return;

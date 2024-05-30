@@ -15,6 +15,7 @@
 # include <vector>
 # include "core/view/Config.hpp"
 # include <core/system/Vector.hpp>
+# include "core/graphics/Camera.hpp"
 
 # include <chrono>
 
@@ -47,10 +48,12 @@ namespace sibr
 		*/
 		void update(float deltaTime);
 
+		void update(int anchor_points, int gaussian_points);
+
 		/** Update state using internal timer.
 		\param doRender should the ImGui panel be genrated immediatly
 		*/
-		void update(bool doRender = true);
+		void update(ShowInfo& info, bool doRender = true);
 
 		/** Toggle the panel visibility. */
 		void toggleVisibility() {
@@ -72,6 +75,12 @@ namespace sibr
 		bool								_hidden; ///< Visibility status.
 		std::string							_name; ///< Panel name.
 		static int							_count; ///< Internal counter to avoid collision when multiple framerate panels are displayed.
+		std::vector<int>					_anchorNums; ///< Last N frame times.
+		size_t								_anchorIndex; ///< Current position in the time list.
+		int									_anchorSum; ///< Current running sum.
+		std::vector<int>					_gaussianNums; ///< Last N frame times.
+		size_t								_gaussianIndex; ///< Current position in the time list.
+		int									_gaussianSum; ///< Current running sum.
 	};
 
 } // namespace sibr

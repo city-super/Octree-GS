@@ -11,6 +11,7 @@
 
 
 #include "DatasetView.hpp"
+# include "core/graphics/Camera.hpp"
 
 namespace sibr {
 	
@@ -83,13 +84,13 @@ namespace sibr {
 
 	}
 
-	void DatasetView::onRender(Window & win)
+	void DatasetView::onRender(Window& win, ShowInfo& info)
 	{
 		if (currentRepro) {
 			displayRepro(currentRepro);
 		}
 
-		MultiViewBase::onRender(win);
+		MultiViewBase::onRender(win, info);
 	}
 
 	void DatasetView::repro(ReprojectionData & data)
