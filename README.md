@@ -255,13 +255,11 @@ or
 If you find our work helpful, please consider citing:
 
 ```bibtex
-@misc{octreegs,
-      title={Octree-GS: Towards Consistent Real-time Rendering with LOD-Structured 3D Gaussians}, 
-      author={Kerui Ren and Lihan Jiang and Tao Lu and Mulin Yu and Linning Xu and Zhangkai Ni and Bo Dai},
-      year={2024},
-      eprint={2403.17898},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{ren2024octree,
+  title={Octree-gs: Towards consistent real-time rendering with lod-structured 3d gaussians},
+  author={Ren, Kerui and Jiang, Lihan and Lu, Tao and Yu, Mulin and Xu, Linning and Ni, Zhangkai and Dai, Bo},
+  journal={arXiv preprint arXiv:2403.17898},
+  year={2024}
 }
 ```
 
