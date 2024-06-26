@@ -39,13 +39,13 @@ time=$(date "+%Y-%m-%d_%H:%M:%S")
 
 if [ "$progressive" = "True" ]; then
     if [ "$warmup" = "True" ]; then
-        python train.py --eval -s /nas/shared/pjlab-lingjun-landmarks/renkerui/data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} --warmup \
+        python train.py --eval -s data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} --warmup \
         --iterations ${iterations} --port $port -m outputs/${data}/${logdir}/$time --appearance_dim ${appearance_dim} \
         --visible_threshold ${visible_threshold}  --base_layer ${base_layer} --dist2level ${dist2level} --update_ratio ${update_ratio} \
         --progressive --init_level ${init_level} --dist_ratio ${dist_ratio} --levels ${levels}  \
         --extra_ratio ${extra_ratio} --extra_up ${extra_up}
     else
-        python train.py --eval -s /nas/shared/pjlab-lingjun-landmarks/renkerui/data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} \
+        python train.py --eval -s data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} \
         --iterations ${iterations} --port $port -m outputs/${data}/${logdir}/$time --appearance_dim ${appearance_dim} \
         --visible_threshold ${visible_threshold}  --base_layer ${base_layer} --dist2level ${dist2level} --update_ratio ${update_ratio} \
         --progressive --init_level ${init_level} --dist_ratio ${dist_ratio} --levels ${levels}  \
@@ -53,13 +53,13 @@ if [ "$progressive" = "True" ]; then
     fi
 else
     if [ "$warmup" = "True" ]; then
-        python train.py --eval -s /nas/shared/pjlab-lingjun-landmarks/renkerui/data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} --warmup \
+        python train.py --eval -s data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} --warmup \
         --iterations ${iterations} --port $port -m outputs/${data}/${logdir}/$time --appearance_dim ${appearance_dim} \
         --visible_threshold ${visible_threshold}  --base_layer ${base_layer} --dist2level ${dist2level} --update_ratio ${update_ratio} \
         --init_level ${init_level} --dist_ratio ${dist_ratio} --levels ${levels}  \
         --extra_ratio ${extra_ratio} --extra_up ${extra_up}  
     else
-        python train.py --eval -s /nas/shared/pjlab-lingjun-landmarks/renkerui/data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} \
+        python train.py --eval -s data/${data} -r ${resolution} --gpu ${gpu} --fork ${fork} --ratio ${ratio} \
         --iterations ${iterations} --port $port -m outputs/${data}/${logdir}/$time --appearance_dim ${appearance_dim} \
         --visible_threshold ${visible_threshold}  --base_layer ${base_layer} --dist2level ${dist2level} --update_ratio ${update_ratio} \
         --init_level ${init_level} --dist_ratio ${dist_ratio} --levels ${levels}  \
