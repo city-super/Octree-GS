@@ -5,7 +5,7 @@ resolution=-1
 appearance_dim=0
 
 fork=2
-base_layer=-1
+base_layer=10
 visible_threshold=-1 #0.9 
 dist2level="round"
 update_ratio=0.2

@@ -26,7 +26,7 @@ import json
 import wandb
 import time
 from os import makedirs
-import shutil, pathlib
+import shutil
 from pathlib import Path
 from PIL import Image
 import torchvision.transforms.functional as tf
@@ -70,8 +70,7 @@ def saveRuntimeCode(dst: str) -> None:
     for additionalPattern in additionalIgnorePatterns:
         ignorePatterns.append(additionalPattern)
 
-    log_dir = pathlib.Path(__file__).parent.resolve()
-
+    log_dir = Path(__file__).resolve().parent
 
     shutil.copytree(log_dir, dst, ignore=shutil.ignore_patterns(*ignorePatterns))
     

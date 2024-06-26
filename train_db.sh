@@ -6,7 +6,7 @@ appearance_dim=0
 
 fork=2
 base_layer=12
-visible_threshold=0.9 #0.9
+visible_threshold=0.9
 dist2level="round"
 update_ratio=0.2
 

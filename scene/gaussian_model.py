@@ -721,12 +721,13 @@ class GaussianModel:
         for cur_level in range(self.levels):
             update_value = self.fork ** update_ratio
             level_mask = (self.get_level == cur_level).squeeze(dim=1)
+            level_ds_mask = (self.get_level == cur_level + 1).squeeze(dim=1)
             if torch.sum(level_mask) == 0:
                 continue
             cur_size = self.voxel_size / (float(self.fork) ** cur_level)
+            ds_size = cur_size / self.fork
             # update threshold
             cur_threshold = threshold * (update_value ** cur_level)
-            ds_size = cur_size / self.fork
             ds_threshold = cur_threshold * update_value
             extra_threshold = cur_threshold * extra_ratio
             # mask from grad threshold
@@ -752,7 +753,7 @@ class GaussianModel:
             selected_xyz = all_xyz.view([-1, 3])[candidate_mask]
             selected_grid_coords = torch.round((selected_xyz-self.init_pos)/cur_size).int()
             selected_grid_coords_unique, inverse_indices = torch.unique(selected_grid_coords, return_inverse=True, dim=0)
-            if selected_grid_coords_unique.shape[0] > 0:
+            if selected_grid_coords_unique.shape[0] > 0 and grid_coords.shape[0] > 0:
                 remove_duplicates = self.get_remove_duplicates(grid_coords, selected_grid_coords_unique)
                 remove_duplicates = ~remove_duplicates
                 candidate_anchor = selected_grid_coords_unique[remove_duplicates]*cur_size+self.init_pos
@@ -766,11 +767,11 @@ class GaussianModel:
                 new_level = torch.zeros([0], dtype=torch.int, device='cuda')
 
             if (~self.progressive or iteration > self.coarse_intervals[-1]) and cur_level < self.levels - 1:
-                grid_coords_ds = torch.round((self.get_anchor[level_mask]-self.init_pos)/ds_size).int()
+                grid_coords_ds = torch.round((self.get_anchor[level_ds_mask]-self.init_pos)/ds_size).int()
                 selected_xyz_ds = all_xyz.view([-1, 3])[candidate_ds_mask]
                 selected_grid_coords_ds = torch.round((selected_xyz_ds-self.init_pos)/ds_size).int()
                 selected_grid_coords_unique_ds, inverse_indices_ds = torch.unique(selected_grid_coords_ds, return_inverse=True, dim=0)
-                if selected_grid_coords_unique_ds.shape[0] > 0:
+                if selected_grid_coords_unique_ds.shape[0] > 0 and grid_coords_ds.shape[0] > 0:
                     remove_duplicates_ds = self.get_remove_duplicates(grid_coords_ds, selected_grid_coords_unique_ds)
                     remove_duplicates_ds = ~remove_duplicates_ds
                     candidate_anchor_ds = selected_grid_coords_unique_ds[remove_duplicates_ds]*ds_size+self.init_pos
@@ -847,7 +848,6 @@ class GaussianModel:
                 self._opacity = optimizable_tensors["opacity"]
                 self._level = torch.cat([self._level, new_level], dim=0)
                 self._extra_level = torch.cat([self._extra_level, new_extra_level], dim=0)
-
 
     def adjust_anchor(self, iteration, check_interval=100, success_threshold=0.8, grad_threshold=0.0002, update_ratio=0.5, extra_ratio=4.0, extra_up=0.25, min_opacity=0.005):
         # # adding anchors
