@@ -1,6 +1,6 @@
 # *Octree*-GS: Towards Consistent Real-time Rendering with LOD-Structured 3D Gaussians
 
-### [Project Page](https://city-super.github.io/octree-gs/) | [Paper](https://arxiv.org/abs/2403.17898) | [Viewers for Windows](https://drive.google.com/file/d/12jg6Upko_pAfX3f4jgnb1Q2BhSQDPScE/view?usp=sharing)
+### [Project Page](https://city-super.github.io/octree-gs/) | [Paper](https://arxiv.org/abs/2403.17898) | [Viewers for Windows](https://drive.google.com/file/d/12jg6Upko_pAfX3f4jgnb1Q2BhSQDPScE/view?usp=sharing) | [Viewers for Linux](https://github.com/YZsZY/OctreeGS-Ubuntu-Viewer)
 
 [Kerui Ren*](https://github.com/tongji-rkr), [Lihan Jiang*](https://jianglh-whu.github.io/), [Tao Lu](https://github.com/inspirelt), [Mulin Yu](https://scholar.google.com/citations?user=w0Od3hQAAAAJ), [Linning Xu](https://eveneveno.github.io/lnxu), [Zhangkai Ni](https://eezkni.github.io/), [Bo Dai](https://daibo.info/) ✉️ <br />
 
@@ -271,4 +271,4 @@ Please follow the LICENSE of [3D-GS](https://github.com/graphdeco-inria/gaussian
 
 ## Acknowledgement
 
-We thank all authors from [3D-GS](https://github.com/graphdeco-inria/gaussian-splatting) and [Scaffold-GS](https://github.com/city-super/Scaffold-GS) for presenting such an excellent work.
+We thank all authors from [3D-GS](https://github.com/graphdeco-inria/gaussian-splatting) and [Scaffold-GS](https://github.com/city-super/Scaffold-GS) for presenting such an excellent work. Also, we thank the author of [Ubuntu-Viewer](https://github.com/YZsZY/OctreeGS-Ubuntu-Viewer) for adapting to linux system.
